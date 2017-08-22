@@ -1,0 +1,106 @@
+[gd_scene load_steps=5 format=1]
+
+[ext_resource path="res://mainScene.gd" type="Script" id=1]
+[ext_resource path="res://Image70000.png" type="Texture" id=2]
+
+[sub_resource type="RectangleShape2D" id=1]
+
+custom_solver_bias = 0.0
+extents = Vector2( 2.9147, 8 )
+
+[sub_resource type="SegmentShape2D" id=2]
+
+custom_solver_bias = 0.0
+a = Vector2( 0, -3.08 )
+b = Vector2( 0, 10 )
+
+[node name="Node2D" type="Node2D"]
+
+script/script = ExtResource( 1 )
+
+[node name="KinematicBody2D" type="KinematicBody2D" parent="."]
+
+input/pickable = false
+shapes/0/shape = SubResource( 1 )
+shapes/0/transform = Matrix32( 1.05071, 0, 0, 1, 7.9375, 8 )
+shapes/0/trigger = false
+collision/layers = 1
+collision/mask = 1
+collision/margin = 0.08
+
+[node name="Image70000" type="Sprite" parent="KinematicBody2D"]
+
+transform/pos = Vector2( 8, 8 )
+texture = ExtResource( 2 )
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="KinematicBody2D"]
+
+transform/pos = Vector2( 7.9375, 8 )
+transform/scale = Vector2( 1.05071, 1 )
+shape = SubResource( 1 )
+trigger = false
+_update_shape_index = 0
+
+[node name="RayCast2D" type="RayCast2D" parent="KinematicBody2D"]
+
+transform/pos = Vector2( 7.5, 8 )
+transform/rot = 90.0
+transform/scale = Vector2( 1, 0.109375 )
+enabled = true
+cast_to = Vector2( 0, 50 )
+layer_mask = 1
+type_mask = 15
+
+[node name="RayCast2D1" type="RayCast2D" parent="KinematicBody2D"]
+
+transform/pos = Vector2( 7.5, 8 )
+transform/rot = 270.0
+transform/scale = Vector2( 1, 0.109375 )
+enabled = true
+cast_to = Vector2( 0, 50 )
+layer_mask = 1
+type_mask = 15
+
+[node name="Camera2D" type="Camera2D" parent="KinematicBody2D"]
+
+offset = Vector2( 32, 0 )
+anchor_mode = 1
+rotating = false
+current = false
+zoom = Vector2( 1, 1 )
+limit/left = -10000000
+limit/top = -10000000
+limit/right = 10000000
+limit/bottom = 10000000
+drag_margin/h_enabled = true
+drag_margin/v_enabled = true
+smoothing/enable = false
+smoothing/speed = 100.0
+drag_margin/left = 0.2
+drag_margin/top = 0.2
+drag_margin/right = 0.2
+drag_margin/bottom = 0.2
+
+[node name="StaticBody2D" type="StaticBody2D" parent="."]
+
+visibility/visible = false
+input/pickable = false
+shapes/0/shape = SubResource( 2 )
+shapes/0/transform = Matrix32( 1, 0, 0, 12.5, 96, 36.5 )
+shapes/0/trigger = false
+collision/layers = 1
+collision/mask = 1
+constant_linear_velocity = Vector2( 0, 0 )
+constant_angular_velocity = 0.0
+friction = 1.0
+bounce = 0.0
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="StaticBody2D"]
+
+transform/pos = Vector2( 96, 36.5 )
+transform/scale = Vector2( 1, 12.5 )
+shape = SubResource( 2 )
+trigger = false
+_update_shape_index = 0
+
+
