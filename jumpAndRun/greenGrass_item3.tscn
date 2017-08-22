@@ -27,17 +27,19 @@ shader_param/amount = 2.915
 [sub_resource type="RectangleShape2D" id=3]
 
 custom_solver_bias = 0.0
-extents = Vector2( 7.93857, 8.0576 )
+extents = Vector2( 7.93857, 7.97519 )
 
 [node name="Node2D" type="Node2D"]
 
 material/material = SubResource( 2 )
 
-[node name="StaticBody2D" type="StaticBody2D" parent="."]
+[node name="StaticBody2D" type="StaticBody2D" parent="." groups=[
+"grass",
+]]
 
 input/pickable = false
 shapes/0/shape = SubResource( 3 )
-shapes/0/transform = Matrix32( 1, 0, 0, 1, 8.03175, 7.97519 )
+shapes/0/transform = Matrix32( 1, 0, 0, 1, 8, 8 )
 shapes/0/trigger = false
 collision/layers = 1
 collision/mask = 1
@@ -48,14 +50,14 @@ bounce = 0.0
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="StaticBody2D"]
 
-transform/pos = Vector2( 8.03175, 7.97519 )
+transform/pos = Vector2( 8, 8 )
 shape = SubResource( 3 )
 trigger = false
 _update_shape_index = 0
 
 [node name="Image40000" type="Sprite" parent="StaticBody2D"]
 
-transform/pos = Vector2( 8.02982, 8.05645 )
+transform/pos = Vector2( 8, 8 )
 texture = ExtResource( 1 )
 
 

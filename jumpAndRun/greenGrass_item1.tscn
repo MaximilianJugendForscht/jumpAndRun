@@ -11,7 +11,9 @@ extents = Vector2( 7.94122, 8.01186 )
 
 transform/pos = Vector2( 0.0510445, 0 )
 
-[node name="StaticBody2D" type="StaticBody2D" parent="."]
+[node name="StaticBody2D" type="StaticBody2D" parent="." groups=[
+"grass",
+]]
 
 input/pickable = false
 shapes/0/shape = SubResource( 1 )
