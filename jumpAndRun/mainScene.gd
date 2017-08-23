@@ -8,6 +8,9 @@ var grassTileGreen = preload("greenGrass_item.tscn");
 var grassTileGreen1 = preload ("greenGrass_item1.tscn");
 var grassTileGreen2 = preload ("greenGrass_item3.tscn")
 
+var fallingAnim1 = preload ("falling0000.png")
+var fallingAnim2 = preload ("falling0001.png")
+var fallingAnim3 = preload ("falling0002.png")
 
 var earthTile1 = preload ("dirt_item1.tscn")
 var earthTile2 = preload ("dirt_item_2.tscn")
@@ -46,7 +49,7 @@ func createGround():
 
 func addTile ():
 	positionOnMap += 16
-	var tileHeight = randi ()% 7
+	var tileHeight = randi ()% 4 +4
 	randomize()
 	var randomSprite = randi ()%3
 	if (randomSprite == 0):
@@ -91,33 +94,52 @@ func addEarthBeneath (var tileHeight):
 
 
 
-
+var right = true
 
 func _process(delta):
-	if (Input.is_action_pressed("ui_right")):
-		print (Input.is_action_pressed("ui_right"))
-	playerPosition = get_node ("KinematicBody2D").get_pos().x
-	get_node ("Camera2D").set_pos(Vector2(round(get_node("KinematicBody2D").get_pos().x), round(get_node("KinematicBody2D").get_pos().y) -32))
-	moveCharacter(delta)
-	goToGround (delta)
-	if (playerPosition + 240 > positionOnMap):
-		addTile()
+	if (get_node ("AnimationPlayer").is_playing() != true):
+		playerPosition = get_node ("KinematicBody2D").get_pos().x
+		get_node ("Camera2D").set_pos(Vector2(round(get_node("KinematicBody2D").get_pos().x), 80))
+		moveCharacter(delta)
+		goToGround (delta)
+		if (playerPosition + 240 > positionOnMap):
+			addTile()
+		jump()
+	else:
+		goToGround(delta)
+		jump()
+		if (right == true):
+			if (Input.is_key_pressed(KEY_LEFT)  && !(Input.is_key_pressed(KEY_RIGHT))):
+				right = false
+				get_node("KinematicBody2D").set_scale(Vector2(-1, 1))
+				get_node ("AnimationPlayer").play("walkingAnimation")
+			get_node ("KinematicBody2D").move (Vector2(50 * delta, 0))
+			
+		elif (right == false):
+			if (Input.is_key_pressed(KEY_RIGHT) && !(Input.is_key_pressed(KEY_LEFT))):
+				right = true
+				get_node("KinematicBody2D").set_scale(Vector2(1, 1))
+				get_node ("AnimationPlayer").play("walkingAnimation")
+			get_node ("KinematicBody2D").move (Vector2(-50*delta, 0))
 
 func goToGround (var delta):
 	get_node("KinematicBody2D").move(Vector2(0, delta * 80))
 
 func moveCharacter (var delta):
+	print (get_node ("KinematicBody2D/right").get_collider())
 	if (Input.is_key_pressed(KEY_RIGHT)):
-		print ("right")
-		get_node("KinematicBody2D/Image70000").set_flip_h(false)
-		get_node ("AnimationPlayer").play("walkingAnimation")
-		while (get_node ("AnimationPlayer").is_playing()):
-			get_node("KinematicBody2D").move(Vector2(delta * 16, 0))
-
+		right = true
+		get_node("KinematicBody2D").set_scale(Vector2(1, 1))
+		if ((get_node("KinematicBody2D/right").is_colliding() == false)):
+			get_node ("AnimationPlayer").play("walkingAnimation")
 
 	if (Input.is_key_pressed(KEY_LEFT)):
-		print ("left")
-		get_node("KinematicBody2D/Image70000").set_flip_h(true)
-		get_node ("AnimationPlayer").play("walkingAnimation")
-		while (get_node ("AnimationPlayer").is_playing()):
-			get_node("KinematicBody2D").move(Vector2(delta * -16, 0))
+		right = false
+		get_node("KinematicBody2D").set_scale(Vector2(-1, 1))
+		if ((get_node("KinematicBody2D/right").is_colliding() == false)):
+			get_node ("AnimationPlayer").play("walkingAnimation")
+
+func jump ():
+	if (Input.is_action_pressed("ui_up")):
+		if (get_node ("KinematicBody2D/RayCast2D").is_colliding()):
+			get_node ("KinematicBody2D").move (Vector2(0, -45))
